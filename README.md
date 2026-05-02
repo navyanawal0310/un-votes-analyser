@@ -1,4 +1,4 @@
-# UN Votes Analyzer
+# UN Votes Analyser
 
 A full-stack data engineering and analytics platform that analyzes United Nations General Assembly voting patterns to uncover geopolitical insights.
 
