@@ -1,14 +1,17 @@
 import { useState } from "react";
-import API from "../api";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import { getCountry } from "../services/api";
 
 export default function CountryStance() {
   const [country, setCountry] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
 
-  const fetchData = async () => {
-    const res = await API.get(`/country/${country}`);
-    setData(res.data.stance);
+  const handleSearch = async () => {
+    try {
+      const res = await getCountry(country);
+      setData(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -21,17 +24,14 @@ export default function CountryStance() {
         onChange={(e) => setCountry(e.target.value)}
       />
 
-      <button onClick={fetchData}>Analyze</button>
+      <button onClick={handleSearch}>Search</button>
 
-      <BarChart width={500} height={300} data={data}>
-        <XAxis dataKey="issue_name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="YES" fill="#4CAF50" />
-        <Bar dataKey="NO" fill="#F44336" />
-        <Bar dataKey="ABSTAIN" fill="#FFC107" />
-      </BarChart>
+      {data && (
+        <div>
+          <p>{country}</p>
+          <p>Alignment: {data.alignment}%</p>
+        </div>
+      )}
     </div>
   );
 }

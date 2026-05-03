@@ -1,15 +1,20 @@
+import Navbar from "./components/Navbar";
+import GlobalIssue from "./components/GlobalIssue";
 import CountryStance from "./components/CountryStance";
 import CompareCountries from "./components/CompareCountries";
-import GlobalIssue from "./components/GlobalIssue";
 
 function App() {
   return (
-    <div>
-      <h1>UN Votes Analyzer</h1>
+    <div className="bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white min-h-screen">
+      
+      <Navbar />
 
-      <CountryStance />
-      <CompareCountries />
-      <GlobalIssue />
+      <div className="max-w-7xl mx-auto px-6 py-10 space-y-12">
+        <GlobalIssue />
+        <CountryStance />
+        <CompareCountries />
+      </div>
+
     </div>
   );
 }

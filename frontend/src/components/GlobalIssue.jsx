@@ -1,33 +1,40 @@
 import { useState } from "react";
-import API from "../api";
+import { getGlobalIssue } from "../services/api";
+import VoteTable from "./VoteTable";
 
 export default function GlobalIssue() {
   const [issue, setIssue] = useState("");
-  const [data, setData] = useState([]);
+  const [votes, setVotes] = useState([]);
 
-  const fetchData = async () => {
-    const res = await API.get(`/global/${issue}`);
-    setData(res.data.distribution);
-  };
+  const handleSearch = async () => {
+  try {
+    const res = await getGlobalIssue(issue.toLowerCase());
+    console.log(res.data);
+    const distribution = res.data.distribution;
+    const formatted = Object.entries(distribution).map(([vote, count]) => ({
+    vote,
+    count
+    }));
+setVotes(formatted);
+  } catch (err) {
+    console.error(err);
+    setVotes([]);
+  }
+};
 
   return (
     <div>
       <h2>Global Issue</h2>
 
       <input
-        placeholder="Enter issue (NUCLEAR, etc)"
+        placeholder="Enter issue (e.g. Ukraine)"
+        value={issue}
         onChange={(e) => setIssue(e.target.value)}
       />
 
-      <button onClick={fetchData}>Analyze</button>
+      <button onClick={handleSearch}>Search</button>
 
-      <ul>
-        {data.map((d, i) => (
-          <li key={i}>
-            {d.vote}: {d.count}
-          </li>
-        ))}
-      </ul>
+      <VoteTable votes={votes} />
     </div>
   );
 }

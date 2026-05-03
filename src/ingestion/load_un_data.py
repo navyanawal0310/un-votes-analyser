@@ -6,7 +6,7 @@ RAW_DATA_PATH = Path("data/raw/un_votes.csv")
 def load_data(sample=False):
     if sample:
         # Load only first 10k rows for testing
-        df = pd.read_csv(RAW_DATA_PATH, nrows=10000)
+        df = pd.read_csv(RAW_DATA_PATH, low_memory=False)
     else:
         # Load in chunks
         chunks = []
